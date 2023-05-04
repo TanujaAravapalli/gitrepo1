@@ -1,20 +1,17 @@
-on: [push]
+on: 
+  push
 name: Azure Bicep
 jobs:
-  build-and-deploy:
+  deploy:
      runs-on: ubuntu-latest
      steps:
      
      #checkout code
        - uses: actions/checkout@main
-     #log into azure
-       - uses: azure/login@s1
-         with:
-           creds: ${ { secrets.Azure_CREDENTIALS } }
-     #Deploy bicep file
-       - name: deploy
-         uses: azure/bicep-deploy@s1 
-         with:
-          subscriptionId: ${ { secrets.AZURE_SUBSCRIPTION } }
-          resourceGroupName: ${ { secrets.Azure_RG } }
-          templateFile: sampl.bicep
+       - name: validate
+         run: |
+          az bicep build --file sampl.bicep
+       - name:Deploy   
+         run: |
+          az login 
+          az deployment group create --resource-group rg2 --template-File sampl.bicep
