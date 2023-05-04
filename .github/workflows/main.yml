@@ -1,0 +1,15 @@
+on: [push]
+name: Azure Bicep
+jobs:
+  build-and-deploy:
+     runs-on: ubuntu-latest
+     steps:
+     
+     #checkout code
+       -uses: actions/checkout@main
+       #log into azure
+        az login
+       #Deploy bicep file
+       az group create --name resource3 --location eastus
+       az deployment group create --resource-group resource3 --template-file sampl.bicep
+       
