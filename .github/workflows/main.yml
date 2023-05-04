@@ -6,10 +6,15 @@ jobs:
      steps:
      
      #checkout code
-       -uses: actions/checkout@main
-       #log into azure
-        az login
-       #Deploy bicep file
-       az group create --name resource3 --location eastus
-       az deployment group create --resource-group resource3 --template-file sampl.bicep
-       
+       - uses: actions/checkout@main
+     #log into azure
+       - uses: azure/login@s1
+         with:
+           creds: ${ { secrets.Azure_CREDENTIALS } }
+     #Deploy bicep file
+       - name: deploy
+         uses: azure/bicep-deploy@s1 
+         with:
+          subscriptionId: ${ { secrets.AZURE_SUBSCRIPTION } }
+          resourceGroupName: ${ { secrets.Azure_RG } }
+          templateFile: sampl.bicep
