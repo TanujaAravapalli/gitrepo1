@@ -1,17 +1,17 @@
-on: 
-  push
-name: Azure Bicep
+on:
+ push:
+name: Azure Bicep Deployment
 jobs:
-  deploy:
-     runs-on: ubuntu-latest
-     steps:
-     
-     #checkout code
-       - uses: actions/checkout@main
-       - name: validate
-         run: |
+  build:
+    runs-on: ubuntu-latest
+    steps:
+     -  uses: actions/checkout@v2
+     -  name: validation only
+        run: |
           az bicep build --file sampl.bicep
-       - name:Deploy   
-         run: |
-          az login 
-          az deployment group create --resource-group rg2 --template-File sampl.bicep
+     -  name: Deployment
+        run: |
+          az login
+          az deployment group create --resource-group rg3 --template-file sampl.bicep
+      
+       
